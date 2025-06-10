@@ -1,0 +1,140 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 950px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+h1 {
+    color: #00f0ff;
+    font-size: 38px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    text-align: center;
+    color: #7de2fc;
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 25px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    padding: 30px;
+    border-radius: 12px;
+}
+
+input[type="file"] {
+    padding: 12px;
+    background: #1c1c1c;
+    border: 1px solid #00f0ff;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 15px;
+}
+
+input[type="file"]:hover {
+    border-color: #7de2fc;
+}
+
+button {
+    padding: 12px 20px;
+    background: #00f0ff;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #7de2fc;
+}
+
+.diagnosis {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 255, 255, 0.1);
+    border-left: 4px solid #00f0ff;
+}
+
+.success {
+    color: #00ffae;
+    border: 1px solid #00ffae;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    background: rgba(0, 255, 174, 0.1);
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.image-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.image-card h3 {
+    background: #00f0ff;
+    color: #000;
+    padding: 12px;
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.image-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    background: #0f2027;
+    padding: 15px;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 32, 39, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    border-radius: 20px;
+    color: #00f0ff;
+    font-size: 20px;
+}
