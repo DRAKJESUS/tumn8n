@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, redirect, jsonify
 from werkzeug.utils import secure_filename
 from processing.tumor_detector import TumorDetector
 from processing.image_processor import generate_visualizations
+from flask import send_file
+
 
 app = Flask(__name__)
 
@@ -96,6 +98,48 @@ def api_analyze():
             "hay_tumor": result['has_tumor'],
             "imagen_marcada": marked_image_url
         })
+
+    return jsonify({"error": "Archivo no válido"}), 400
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+import io
+
+@app.route('/api/pdf-report', methods=['POST'])
+def api_pdf_report():
+    if 'file' not in request.files:
+        return jsonify({"error": "No se encontró archivo"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "Nombre de archivo vacío"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+
+        detector = TumorDetector()
+        result = detector.detect_tumor(file_path)
+
+        base_name = os.path.splitext(filename)[0]
+        result_images = generate_visualizations(file_path, app.config['RESULT_FOLDER'], base_name)
+
+        # Crear PDF en memoria
+        pdf_bytes = io.BytesIO()
+        c = canvas.Canvas(pdf_bytes, pagesize=letter)
+        c.drawString(100, 750, "Resultado del análisis de tumor cerebral")
+        c.drawString(100, 730, f"¿Hay tumor?: {'Sí' if result['has_tumor'] else 'No'}")
+
+        if result_images:
+            img_path = result_images[0]
+            image = ImageReader(img_path)
+            c.drawImage(image, 100, 400, width=300, height=300)
+
+        c.save()
+        pdf_bytes.seek(0)
+
+        return send_file(pdf_bytes, mimetype='application/pdf', download_name='reporte_tumor.pdf')
 
     return jsonify({"error": "Archivo no válido"}), 400
 
